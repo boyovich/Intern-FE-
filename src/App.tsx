@@ -1,14 +1,21 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { FloatButtonContentProps } from "antd/es/float-button/interface";
 import "antd/dist/reset.css";
-import { DatePicker, Button } from "antd";
-
+import { Layout } from "antd";
+import { Nav } from "./components/Nav";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserList } from "./components/UserList";
+import { CompanyList } from "./components/CompanyList";
 function App() {
   return (
     <div className="App">
-      <Button>AntButton</Button>
+      <Nav />
+      <div className="layout">
+        <Routes>
+          <Route path="users" element={<UserList />} />
+
+          <Route path="companies" element={<CompanyList />} />
+        </Routes>
+      </div>
     </div>
   );
 }

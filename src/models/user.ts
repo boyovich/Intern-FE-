@@ -1,12 +1,11 @@
 import { Identifier } from "typescript";
 
 export interface User {
-  firstName: string;
-  lastName: string;
-  companyId: string;
-  dateOfBirth: Date;
-  position: Position;
-  phoneNumber: string;
+  id : string;
+  fullName : string;
+  dateOfBirth : Date;
+  companyName : string;
+  position : string;
 }
 
 enum Position {
