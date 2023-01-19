@@ -6,6 +6,7 @@ export interface User {
   dateOfBirth : Date;
   companyName : string;
   position : string;
+  phoneNumber : string;
 }
 
 enum Position {

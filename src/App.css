@@ -62,7 +62,9 @@
   padding: 1em;
 }
 .header1 {
-  text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .navbar {
@@ -97,4 +99,8 @@
 .layout{
   width: auto;
   height: auto;
+}
+
+.btn {
+  appearance: button;
 }

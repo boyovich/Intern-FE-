@@ -1,6 +1,10 @@
+import { Button } from "antd";
 import * as React from "react";
+import { Link, Route, Routes } from "react-router-dom";
 import { User } from "../models/user";
 import { SingleUser } from "./SingleUser";
+import { UserForm } from "./UserForm";
+
 export interface IUserListProps {}
 
 export function UserList(props: IUserListProps) {
@@ -23,7 +27,12 @@ export function UserList(props: IUserListProps) {
   }, []);
   return (
     <>
-      <h1 className="header1">Users:</h1>
+      <div className="header1">
+        <h1>Users:</h1>
+        <Link to="/new-user">
+          <Button>Add User</Button>
+        </Link>
+      </div>
       <div className="user-list">
         {users.map((user) => (
           <SingleUser key={user.id} user={user} />

@@ -3,4 +3,5 @@ export interface Company {
   name: string;
   city: string;
   country: string;
+  numberOfUsers:number;
 }

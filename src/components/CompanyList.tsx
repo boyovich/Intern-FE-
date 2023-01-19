@@ -1,5 +1,8 @@
+import { Button } from "antd";
 import * as React from "react";
+import { Link, Route, Routes } from "react-router-dom";
 import { Company } from "../models/company";
+import { CompanyForm } from "./CompanyForm";
 import { SingleCompany } from "./SingleCompany";
 
 export interface ICompanyListProps {}
@@ -24,6 +27,9 @@ export function CompanyList(props: ICompanyListProps) {
   return (
     <>
       <h1 className="header1">Companies:</h1>
+      <Link to="/companies/new-company">
+        <Button>Add Company</Button>
+      </Link>
       <div className="company-list">
         {companies.map((com) => (
           <SingleCompany key={com.id} company={com} />
