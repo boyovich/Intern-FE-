@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  DatePicker,
-  DatePickerProps,
-  Form,
-  Input,
-  Radio,
-  Select,
-} from "antd";
-import dayjs from "dayjs";
+import React, { useState } from "react";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../models/user";
 import { Company } from "../../models/company";
-import moment from "moment";
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
 interface CreateUser {

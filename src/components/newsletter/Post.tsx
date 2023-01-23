@@ -1,5 +1,4 @@
 import { Card } from "antd";
-import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../../models/post";
 

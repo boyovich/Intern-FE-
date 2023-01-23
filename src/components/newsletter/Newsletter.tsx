@@ -1,5 +1,3 @@
-import * as React from "react";
-import { Post } from "../../models/post";
 import { Posts } from "./Posts";
 
 export interface INewsletterProps {}

@@ -1,9 +1,5 @@
-import * as React from "react";
-import { Link, Route, Routes } from "react-router-dom";
-import { Layout } from "./Layout";
-import AppRoutes from "../AppRoutes";
+import { Link } from "react-router-dom";
 import LinkRoutes from "../AppRoutes";
-import { UserList } from "./user/UserList";
 export interface INavProps {}
 type Link = {
   label: string;

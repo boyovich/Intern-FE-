@@ -1,8 +1,7 @@
 import { Button } from "antd";
 import * as React from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Company } from "../../models/company";
-import { CompanyForm } from "./CompanyForm";
 
 export interface ISingleCompanyProps {
   company: Company;
