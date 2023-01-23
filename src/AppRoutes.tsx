@@ -1,5 +1,5 @@
-import { CompanyList } from "./components/CompanyList";
-import { UserList } from "./components/UserList";
+import { CompanyList } from "./components/company/CompanyList";
+import { UserList } from "./components/user/UserList";
 
 const LinkRoutes = [
   {
@@ -13,6 +13,10 @@ const LinkRoutes = [
   {
     label: "Companies",
     href: "/companies",
+  },
+  {
+    label: "Newsletter",
+    href: "/newsletter",
   },
 ];
 

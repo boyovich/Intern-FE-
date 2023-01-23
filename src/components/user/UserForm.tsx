@@ -10,8 +10,8 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../models/user";
-import { Company } from "../models/company";
+import { User } from "../../models/user";
+import { Company } from "../../models/company";
 import moment from "moment";
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
@@ -33,6 +33,7 @@ export function UserForm() {
   const navigate = useNavigate();
   const params = useParams();
   const edit: boolean = params.id !== undefined;
+  const comp: boolean = params.companyId !== undefined;
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
     setFormLayout(layout);
   };
@@ -75,10 +76,12 @@ export function UserForm() {
       })
       .then((data) => {
         setCompanies(data);
+        console.log(companies.find((c) => c.id === params.companyId)?.name);
       })
       .catch((err) => {
         console.log(err);
       });
+    console.log(comp);
   }, []);
   const onCreate = (values: any) => {
     console.log(values);
@@ -89,14 +92,12 @@ export function UserForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
-    fetch("http://localhost:5129/User", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    fetch("http://localhost:5129/User", requestOptions).then((response) =>
+      response.json()
+    );
     navigate("/users");
   };
   const onEdit = (values: any) => {
-    console.log(values);
-    console.log(date);
     let user: CreateUser = values;
     user.dateOfBirth = date;
     console.log(user);
@@ -118,7 +119,11 @@ export function UserForm() {
       onValuesChange={onFormLayoutChange}
       onFinish={edit ? onEdit : onCreate}
     >
-      <Form.Item label="First Name" name="firstName">
+      <Form.Item
+        label="First Name"
+        name="firstName"
+        rules={[{ required: true }]}
+      >
         <Input
           placeholder={
             edit
@@ -127,7 +132,7 @@ export function UserForm() {
           }
         />
       </Form.Item>
-      <Form.Item label="Last Name" name="lastName">
+      <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
         <Input
           placeholder={
             edit
@@ -136,16 +141,38 @@ export function UserForm() {
           }
         />
       </Form.Item>
-      <Form.Item label="Company Name" name="companyId">
-        <Select placeholder={user?.companyName}>
-          {companies.map((c) => (
-            <Option key={c.id} value={c.id}>
-              {c.name}
-            </Option>
-          ))}
-        </Select>
+      <Form.Item
+        label="Company Name"
+        name="companyId"
+        rules={[{ required: true }]}
+        initialValue={params.companyId}
+      >
+        {comp ? (
+          <Select
+            style={{ width: 120 }}
+            disabled
+            options={[
+              {
+                value: params.companyId,
+                label: companies.find((c) => c.id === params.companyId)?.name,
+              },
+            ]}
+          />
+        ) : (
+          <Select placeholder={edit ? user?.companyName : "Company"}>
+            {companies.map((c) => (
+              <Option key={c.id} value={c.id}>
+                {c.name}
+              </Option>
+            ))}
+          </Select>
+        )}
       </Form.Item>
-      <Form.Item label="Date of birth" name="dateOfBirth">
+      <Form.Item
+        label="Date of birth"
+        name="dateOfBirth"
+        rules={[{ required: true }]}
+      >
         <DatePicker
           placeholder={user?.dateOfBirth.toString().substring(0, 10)}
           picker="date"
@@ -156,16 +183,20 @@ export function UserForm() {
           allowClear
         />
       </Form.Item>
-      <Form.Item label="Position" name="position">
-        <Select placeholder={user?.position} allowClear>
+      <Form.Item label="Position" name="position" rules={[{ required: true }]}>
+        <Select placeholder={edit ? user?.position : "Position"} allowClear>
           <Option value={0}>Manager</Option>
           <Option value={1}>Software developer</Option>
           <Option value={2}>Quality assurance</Option>
           <Option value={3}>Staff</Option>
         </Select>
       </Form.Item>
-      <Form.Item label="Phone Number" name="phoneNumber">
-        <Input placeholder={user?.phoneNumber} />
+      <Form.Item
+        label="Phone Number"
+        name="phoneNumber"
+        rules={[{ required: true }]}
+      >
+        <Input placeholder={edit ? user?.phoneNumber : "Phone Number"} />
       </Form.Item>
       <Form.Item {...buttonItemLayout}>
         <Button type="primary" htmlType="submit">

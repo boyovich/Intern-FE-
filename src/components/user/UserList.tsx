@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import * as React from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import { User } from "../models/user";
+import { User } from "../../models/user";
 import { SingleUser } from "./SingleUser";
 import { UserForm } from "./UserForm";
 

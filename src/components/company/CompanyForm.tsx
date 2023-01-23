@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Radio } from "antd";
 import { useNavigate, Router, useParams } from "react-router-dom";
-import { Company } from "../models/company";
-import { UserList } from "./UserList";
-import { User } from "../models/user";
-import { SingleUser } from "./SingleUser";
+import { Company } from "../../models/company";
+import { UserList } from "../user/UserList";
+import { User } from "../../models/user";
+import { SingleUser } from "../user/SingleUser";
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
 interface CreateCompany {
@@ -39,19 +39,21 @@ export function CompanyForm() {
       .catch((err) => {
         console.log(err);
       });
-    fetch("http://localhost:5129/User/getUsersByCompany/" + params.id)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw response;
-      })
-      .then((data) => {
-        setUsers(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (edit) {
+      fetch("http://localhost:5129/User/getUsersByCompany/" + params.id)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response;
+        })
+        .then((data) => {
+          setUsers(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
   const formItemLayout =
     formLayout === "horizontal"
@@ -99,13 +101,13 @@ export function CompanyForm() {
         onValuesChange={onFormLayoutChange}
         onFinish={edit ? onEdit : onCreate}
       >
-        <Form.Item label="Name" name="name">
+        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
           <Input placeholder={company !== undefined ? company.name : "name"} />
         </Form.Item>
-        <Form.Item label="City" name="city">
+        <Form.Item label="City" name="city" rules={[{ required: true }]}>
           <Input placeholder={company !== undefined ? company.city : "city"} />
         </Form.Item>
-        <Form.Item label="Country" name="country">
+        <Form.Item label="Country" name="country" rules={[{ required: true }]}>
           <Input
             placeholder={company !== undefined ? company.country : "country"}
           />
@@ -118,7 +120,13 @@ export function CompanyForm() {
       </Form>
       {edit && (
         <div>
-          <Button>Add</Button>
+          <Button
+            onClick={() => {
+              navigate("/create-user/" + company?.id);
+            }}
+          >
+            Add
+          </Button>
           <div className="user-list">
             {users.map((user) => (
               <SingleUser key={user.id} user={user} />

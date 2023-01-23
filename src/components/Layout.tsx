@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Route, Router, Routes, BrowserRouter } from "react-router-dom";
-import { CompanyList } from "./CompanyList";
+import { CompanyList } from "./company/CompanyList";
 import { Nav } from "./Nav";
-import { UserList } from "./UserList";
+import { UserList } from "./user/UserList";
 
 export interface ILayoutProps {
   children?: React.ReactNode;

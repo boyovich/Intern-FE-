@@ -3,7 +3,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { Layout } from "./Layout";
 import AppRoutes from "../AppRoutes";
 import LinkRoutes from "../AppRoutes";
-import { UserList } from "./UserList";
+import { UserList } from "./user/UserList";
 export interface INavProps {}
 type Link = {
   label: string;
