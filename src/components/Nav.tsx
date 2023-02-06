@@ -1,5 +1,8 @@
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import LinkRoutes from "../AppRoutes";
+import WeatherLogo from "../assets/weather-vane-1-svgrepo-com.svg";
+
 export interface INavProps {}
 type Link = {
   label: string;
@@ -7,16 +10,19 @@ type Link = {
 };
 export function Nav(props: INavProps) {
   return (
-    <nav className="navbar">
-      <div className="link-container">
+    <div className="header">
+      <nav className="navbar">
         {LinkRoutes.map(({ label, href }: Link) => {
           return (
-            <div key={href} className="link">
-              <Link to={href}>{label}</Link>
-            </div>
+            <Link key={href} to={href} className="link">
+              {label}
+            </Link>
           );
         })}
-      </div>
-    </nav>
+        <Button className="btn-weather">
+          <img src={WeatherLogo} className="weather-logo" />
+        </Button>
+      </nav>
+    </div>
   );
 }

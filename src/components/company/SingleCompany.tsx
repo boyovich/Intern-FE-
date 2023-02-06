@@ -22,24 +22,36 @@ export function SingleCompany(props: ISingleCompanyProps) {
       .catch((err) => console.log(err));
   };
   return (
-    <div>
+    <>
       {!deleted && (
-        <div className="company">
-          <div>
+        <div className="company-list__company">
+          <span className="company-list__company-field--name">
             {props.company.name}
-            <span> </span>
+          </span>
+          <span className="company-list__company-field--city">
             {props.company.city}
-            <span> </span>
+          </span>
+          <span className="company-list__company-field--country">
             {props.company.country}
-            <span> </span>
+          </span>
+          <span className="company-list__company-field--num">
             {props.company.numberOfUsers}
-          </div>
-          <Link to={`/companies/update-company/${props.company.id}`}>
-            <Button>Edit</Button>
+          </span>
+
+          <Link
+            to={`/companies/update-company/${props.company.id}`}
+            className="company-list__company--edit"
+          >
+            <Button className="btn company-list__company--edit">Edit</Button>
           </Link>
-          <Button onClick={deleteCompany}>Delete</Button>
+          <Button
+            onClick={deleteCompany}
+            className="btn company-list__company--delete"
+          >
+            Delete
+          </Button>
         </div>
       )}
-    </div>
+    </>
   );
 }

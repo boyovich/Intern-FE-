@@ -1,4 +1,4 @@
-import { Button, Card } from "antd";
+import { Button, Card, Divider } from "antd";
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Post } from "../../models/post";
@@ -64,7 +64,7 @@ export function PostComment(props: IPostCommentProps) {
       .then((json) => console.log(json));
   };
   return (
-    <div>
+    <>
       <h1 style={{ justifyContent: "space-between" }}>
         <span>Post details</span>
       </h1>
@@ -86,19 +86,26 @@ export function PostComment(props: IPostCommentProps) {
         }}
         value={post.body}
       />
-      <h2>Comments:</h2>
-      <div className="comment-list">
-        {comments?.map((com: Comment) => (
-          <div key={com.id} className="comment_email">
-            <Card className="comment-card" title={com.name}>
-              {com.body.length < 16
-                ? com.body
-                : `${com.body.substring(0, 15)}...`}
-            </Card>
-            <div className="hide">{com.email}</div>
-          </div>
-        ))}
+      <div className="comment-container">
+        <h1 id="comment_title">Comments</h1>
+        {comments ? (
+          comments?.map((com: Comment) => (
+            <div key={com.id} className="comment-container__card">
+              <Card
+                className="comment-container__card--content"
+                title={com.name}
+              >
+                {com.body.length < 16
+                  ? com.body
+                  : `${com.body.substring(0, 15)}...`}
+              </Card>
+              <div className="comment-container__card--hide">{com.email}</div>
+            </div>
+          ))
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
-    </div>
+    </>
   );
 }

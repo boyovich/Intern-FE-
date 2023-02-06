@@ -12,8 +12,11 @@ export function SinglePost(props: IPostProps) {
     navigate(`/posts/${props.post.id}/comment`);
   }
   return (
-    <Card onClick={onClick}>
-      <div style={{ fontSize: 20, cursor: "pointer" }}>{props.post.title}</div>
+    <Card
+      onClick={onClick}
+      className="post-container__card"
+      title={props.post.title}
+    >
       {props.post.body}
     </Card>
   );

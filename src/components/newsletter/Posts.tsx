@@ -22,7 +22,9 @@ export function Posts(props: IPostsProps) {
       });
   }, []);
   return (
-    <div>
+    <div className="post-container">
+      <h1 id="post_title">Posts</h1>
+
       {posts.map((post) => (
         <SinglePost key={post.id} post={post} />
       ))}

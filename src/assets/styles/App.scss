@@ -1,0 +1,328 @@
+@import "abstracts/mixins";
+html {
+  font-size: 62.5%;
+}
+*,*::after,*::before{
+    margin:0;
+    padding: 0;
+    box-sizing: inherit;
+}
+body {
+  box-sizing: border-box;
+}
+.header {
+  height: 100px;
+  animation: moveInTop 2s;
+  display: flex;
+}
+$color-font-primary: rgb(123,132,132);
+$color-border-hover-primary: gray;
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(248, 250, 251);
+  padding-top: 10rem;
+  padding-bottom: 5rem;
+  
+  border-radius: 4rem;
+}
+.outer_layout{
+  background-image: linear-gradient(to left bottom, rgb(220,224,232), rgb(214,217,226));
+  padding:4rem 4rem;
+  width:100vw;
+}
+@keyframes moveInTop {
+  0% {
+    transform: translateY(-2em);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+.list{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #fff; 
+  border-color: rgb(209,211,209);
+  &__header{
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid gray;
+    border-top: 1px solid gray;
+    padding: 1rem;
+    background-color: rgb(250, 250, 250);
+    color: $color-font-primary;
+  }
+  .btn{
+    & > span{
+        font-weight: bold;
+    }
+  }
+  .btn:hover{
+    color: gray;
+    border-color: $color-border-hover-primary;
+  }
+  & > *:not(:last-child,:first-child) {
+    border-bottom: 1px solid;
+    border-color: rgb(209,211,209);
+  }
+}
+.navbar {
+  width: 100%;
+  background: #000;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  a:link,
+  a:visited {
+    text-decoration: none;
+    color: #fff;
+    font-size: 2rem;
+    margin: 0 1rem;
+    align-self: center;
+    &:hover {
+      text-decoration: none;
+      color: #ddd;
+    }
+  }
+}
+.weather-logo {
+  width: 4rem;
+  height: 4rem;
+}
+.btn-weather {
+  border-radius: 5rem;
+  margin-left: auto;
+  margin-right: 1rem;
+  align-self: center;
+  width: 5rem;
+  height: 5rem;
+  padding: 0 0 0 2px;
+}
+.header1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin:0.5rem;
+  h1 {
+      margin: 0 1rem;
+      display: inline;
+    }
+    btn-create {
+        margin: 1rem 1rem;
+    }
+}
+.ant-modal{
+  width: 30%;
+  margin:auto;
+
+}
+.user-form{
+  width: 100%;
+  &__item--first-name,
+  &__item--last-name,
+  &__item--company,
+  &__item--position,
+  &__item--phone-number{
+    &:hover,
+    &:focus{
+      border-color:$color-border-hover-primary;
+    }
+  }
+}
+
+.company-list{
+  width:80%;
+  &__header {
+    &--field-name,
+    &--field-city,
+    &--field-country,
+    &--field-num{
+      flex: 0 0 20%;
+      text-align: left;
+      font-weight: bold;
+    }
+  }
+  &__company {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid gray;
+    align-items: center;
+    padding:0.5rem;
+    &-field--name,
+    &-field--city,
+    &-field--country,
+    &-field--num {
+      flex: 0 0 20%;
+      text-align: left;
+      font-weight: bold;
+    }
+    &-field--name,
+    &-field--country{
+      font-weight: bold;
+    }
+    &-field--city,
+    &-field--num{
+      font-size: 1.2rem;
+    }
+    &--edit{
+        margin-left:auto;
+        margin-right: 0.1rem;
+    }
+    &--delete{
+        margin-right:0.3rem;
+        margin-left:0.3rem;
+    }
+  }
+}
+.user-list {
+    width:85%;
+
+  &__user {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding:0.5rem;
+    &-field--name,
+    &-field--dob,
+    &-field--company,
+    &-field--position {
+      flex: 0 0 20%;
+      text-align: left;
+      font-weight: bold;
+    }
+    &-field--name,
+    &-field--company{
+        font-weight: bold;
+    }
+    &-field--dob,
+    &-field--position{
+        font-size: 1.2rem;
+    }
+    &--edit{
+        margin-left:auto;
+        margin-right: 0.1rem;
+    }
+    &--delete{
+        margin-right:0.3rem;
+        margin-left:0.3rem;
+    }
+  }
+}
+.ant-pagination{
+  display:flex;
+  justify-content: flex-start;
+  padding:3px;
+  color: $color-font-primary;
+  &-total-text{
+    margin-left:1rem;
+    flex: 0 0 40%;
+    text-align: left;
+  }
+  &-prev,&-item,&-next{
+    display:none;
+  }
+  &-options{
+    margin-left:100px;
+  }
+  .ant-select{
+    margin-left:auto;
+  }
+}
+
+.post-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  #post_title{
+    font-size: 5rem;
+    align-self: flex-start;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    text-align: left;
+  }
+  &__card {
+    font-size: 1rem;
+    width: 20rem;
+    height: 15rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+.comment-container {
+  display: grid;
+  grid-template-columns: repeat(4,calc(100%/4));
+  @include respond(phone){
+    grid-template-columns: repeat(2,50%);
+  }
+  width:80%;
+  margin: 1rem 1rem;
+  #comment_title{
+    grid-column-start: 1;
+    grid-column-end: -1;
+    text-align: left;
+    font-size: 5rem;
+    margin:1vw;
+    @include respond(phone){
+      font-size: 3rem;
+    }
+  }
+  &__card {
+    position: relative;
+    display: block;
+    margin: 1vw 1vw;
+    &--content {
+      display: block;
+      border: 1px solid black;
+      width: 100%;
+      z-index: 1;
+      &:hover {
+        background-color: beige;
+      }
+    }
+    &--hide {
+      display:block;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      font-size: 1.5rem;
+      transition: all 2s;
+      
+    }
+    &:hover > .comment-container__card--hide {
+      display: block;
+      z-index: 2;
+      background-color: beige;
+      border: 1px gray;
+      transform: translateY(-2rem);
+    }
+  }
+}
+.title-textarea {
+  height: 30px;
+  width: 50%;
+}
+
+.body-textarea {
+  height: 100px;
+  width: 40%;
+}
+
+:where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-options {
+  display: inline-block;
+  margin-inline-start: auto;
+  vertical-align: middle;
+  &::before{
+    content: "Result per page  ";
+    display: inline;
+  }
+}
+
