@@ -16,7 +16,7 @@ body {
   display: flex;
 }
 $color-font-primary: rgb(123,132,132);
-$color-border-hover-primary: gray;
+$color-border-hover-primary: #444444;
 .layout {
   display: flex;
   flex-direction: column;
@@ -58,6 +58,12 @@ $color-border-hover-primary: gray;
     padding: 1rem;
     background-color: rgb(250, 250, 250);
     color: $color-font-primary;
+    span{
+      flex: 0 0 20%;
+      text-align: left;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
   }
   .btn{
     & > span{
@@ -91,6 +97,9 @@ $color-border-hover-primary: gray;
       text-decoration: none;
       color: #ddd;
     }
+  }
+  .link a:active {
+    color:blue;
   }
 }
 .weather-logo {
@@ -137,7 +146,21 @@ $color-border-hover-primary: gray;
     }
   }
 }
-
+.company-form{
+  width: 50%;
+  .ant-input:focus,.ant-input:hover{
+    border-color:$color-border-hover-primary;
+  }
+  :where(.css-dev-only-do-not-override-9ntgx0).ant-btn-primary {
+    color: #fff;
+    background-color: gray;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+  :where(.css-dev-only-do-not-override-9ntgx0).ant-btn-primary:not(:disabled):hover {
+    color: #fff;
+    background-color: $color-border-hover-primary;
+  }
+}
+}
 .company-list{
   width:80%;
   &__header {
@@ -162,10 +185,6 @@ $color-border-hover-primary: gray;
     &-field--num {
       flex: 0 0 20%;
       text-align: left;
-      font-weight: bold;
-    }
-    &-field--name,
-    &-field--country{
       font-weight: bold;
     }
     &-field--city,
@@ -201,10 +220,11 @@ $color-border-hover-primary: gray;
     &-field--name,
     &-field--company{
         font-weight: bold;
+        font-size: 1.2rem;
     }
     &-field--dob,
     &-field--position{
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
     &--edit{
         margin-left:auto;
@@ -240,6 +260,12 @@ $color-border-hover-primary: gray;
 .post-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  width: 85%;
+  justify-items: center;
+  gap: 1rem;
+  height: 60vh;
+  overflow: auto;
+  padding: 0 1rem;
   #post_title{
     font-size: 5rem;
     align-self: flex-start;
@@ -249,8 +275,9 @@ $color-border-hover-primary: gray;
   }
   &__card {
     font-size: 1rem;
-    width: 20rem;
+    width: 100%;
     height: 15rem;
+    overflow: hidden;
     &:hover {
       cursor: pointer;
     }
@@ -306,16 +333,27 @@ $color-border-hover-primary: gray;
     }
   }
 }
-.title-textarea {
+
+.comment-form{
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+  height: fit-content;
+  .title-textarea {
   height: 30px;
   width: 50%;
-}
+  }
 
-.body-textarea {
-  height: 100px;
-  width: 40%;
-}
+  .body-textarea {
+  height: max-content;
+  width: 50%;
+  }
+  &-buttons{
+    display: flex;
 
+  }
+}
 :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-options {
   display: inline-block;
   margin-inline-start: auto;

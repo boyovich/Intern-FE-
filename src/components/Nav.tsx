@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import LinkRoutes from "../AppRoutes";
 import WeatherLogo from "../assets/weather-vane-1-svgrepo-com.svg";
 
@@ -8,15 +8,22 @@ type Link = {
   label: string;
   href: string;
 };
+let activeStyle = {
+  textDecoration: "underline",
+};
 export function Nav(props: INavProps) {
   return (
     <div className="header">
       <nav className="navbar">
         {LinkRoutes.map(({ label, href }: Link) => {
           return (
-            <Link key={href} to={href} className="link">
+            <NavLink
+              key={href}
+              to={href}
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+            >
               {label}
-            </Link>
+            </NavLink>
           );
         })}
         <Button className="btn-weather">

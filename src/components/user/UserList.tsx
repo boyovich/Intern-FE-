@@ -13,7 +13,7 @@ export interface IUserListProps {}
 
 export function UserList(props: IUserListProps) {
   const [users, setUsers] = React.useState<User[]>([]);
-  const [rangeOfUsers, setRangeOfUsers] = React.useState<number[]>([0, 3]);
+  const [usersOnPage, setUsersOnPage] = React.useState<User[]>([]);
   const selectedUser = useSelector(
     (state: RootState) => state.selectUser.selectedUser
   );
@@ -22,7 +22,13 @@ export function UserList(props: IUserListProps) {
   );
   const dispatch = useDispatch();
   React.useEffect(() => {
-    fetch("http://localhost:5129/User/getAllUsers")
+    const pageRequest = { pageNumber: 1, pageSize: 100 };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pageRequest),
+    };
+    fetch("http://localhost:5129/User/getAllUsers", requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -35,9 +41,27 @@ export function UserList(props: IUserListProps) {
       .catch((err) => {
         console.log(err);
       });
-  }, [users]);
+  }, []);
   const onPaginationChange = (page: number, pageSize: number) => {
-    setRangeOfUsers([page * pageSize - pageSize, page * pageSize]);
+    const pageRequest = { pageNumber: page, pageSize: pageSize };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pageRequest),
+    };
+    fetch("http://localhost:5129/User/getAllUsers", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        setUsersOnPage(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
@@ -55,12 +79,12 @@ export function UserList(props: IUserListProps) {
           </Button>
         </div>
         <div className=" list__header user-list__header">
-          <span className="user-list__user-field--name">Name</span>
-          <span className="user-list__user-field--dob">Date of birth</span>
-          <span className="user-list__user-field--company">Company</span>
-          <span className="user-list__user-field--position">Position</span>
+          <span>Name</span>
+          <span>Date of birth</span>
+          <span>Company</span>
+          <span>Position</span>
         </div>
-        {users.slice(rangeOfUsers[0], rangeOfUsers[1]).map((user) => (
+        {usersOnPage.map((user) => (
           <SingleUser key={user.id} user={user} />
         ))}
         <Pagination

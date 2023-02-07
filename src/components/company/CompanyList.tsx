@@ -8,18 +8,16 @@ export interface ICompanyListProps {}
 
 export function CompanyList(props: ICompanyListProps) {
   const [companies, setCompanies] = React.useState<Company[]>([]);
-  const [rangeOfCompanies, setRangeOfCompanies] = React.useState<number[]>([
-    0, 1,
-  ]);
-  let paginationProps: PaginationProps;
-  const onPaginationChange: PaginationProps["onChange"] = (
-    page: number,
-    pageSize: number
-  ) => {
-    setRangeOfCompanies([page * pageSize - pageSize + 1, page * pageSize]);
-  };
+  const [companiesOnPage, setCompaniesOnPage] = React.useState<Company[]>([]);
+
   React.useEffect(() => {
-    fetch("http://localhost:5129/Company")
+    const pageRequest = { pageNumber: 1, pageSize: 100 };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pageRequest),
+    };
+    fetch("http://localhost:5129/Company", requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -32,7 +30,31 @@ export function CompanyList(props: ICompanyListProps) {
       .catch((err) => {
         console.log(err);
       });
-  }, [companies]);
+  }, []);
+  const onPaginationChange: PaginationProps["onChange"] = (
+    page: number,
+    pageSize: number
+  ) => {
+    const pageRequest = { pageNumber: page, pageSize: pageSize };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pageRequest),
+    };
+    fetch("http://localhost:5129/Company", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        setCompaniesOnPage(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div className="list company-list">
@@ -50,11 +72,9 @@ export function CompanyList(props: ICompanyListProps) {
             Number of users
           </span>
         </div>
-        {companies
-          .slice(rangeOfCompanies[0], rangeOfCompanies[1] + 1)
-          .map((com) => (
-            <SingleCompany key={com.id} company={com} />
-          ))}
+        {companiesOnPage.map((com) => (
+          <SingleCompany key={com.id} company={com} />
+        ))}
         <Pagination
           total={companies.length}
           showTotal={(total, range) =>

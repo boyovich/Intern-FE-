@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { useDispatch } from "react-redux/es/exports";
 import { toogleOpen } from "../../redux/slices/openUserformSlice";
+import { CompanyForm } from "../company/CompanyForm";
+import { isPropertyAssignment } from "typescript";
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
 interface CreateUser {
@@ -19,6 +21,7 @@ interface CreateUser {
 }
 interface IUserFormProps {
   user?: User;
+  company?: Company;
 }
 const { Option } = Select;
 export function UserForm(props: IUserFormProps) {
@@ -32,7 +35,7 @@ export function UserForm(props: IUserFormProps) {
   );
   const dispatch: AppDispatch = useDispatch();
   const edit: boolean = props.user !== undefined;
-  const comp: boolean = params.companyId !== undefined;
+  const comp: boolean = props.company !== undefined;
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
     setFormLayout(layout);
   };
@@ -62,12 +65,10 @@ export function UserForm(props: IUserFormProps) {
       })
       .then((data) => {
         setCompanies(data);
-        console.log(companies.find((c) => c.id === params.companyId)?.name);
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log(comp);
   }, []);
   const onCreate = (values: any) => {
     console.log(values);
@@ -99,6 +100,7 @@ export function UserForm(props: IUserFormProps) {
     <Modal
       open={isUserformOpened}
       onCancel={() => dispatch(toogleOpen())}
+      onOk={form.submit}
       destroyOnClose
       closable={false}
       className="user-modal"
@@ -118,16 +120,17 @@ export function UserForm(props: IUserFormProps) {
           name="firstName"
           rules={[{ required: true }]}
           className="form-item"
+          initialValue={
+            edit
+              ? props.user?.fullName?.substring(
+                  0,
+                  props.user?.fullName?.indexOf(" ")
+                )
+              : ""
+          }
         >
           <Input
-            placeholder={
-              edit
-                ? props.user?.fullName?.substring(
-                    0,
-                    props.user?.fullName?.indexOf(" ")
-                  )
-                : "First name"
-            }
+            placeholder={edit ? "" : "First name"}
             className="user-form__item--first-name"
           />
         </Form.Item>
@@ -136,23 +139,24 @@ export function UserForm(props: IUserFormProps) {
           name="lastName"
           rules={[{ required: true }]}
           className="form-item"
+          initialValue={
+            edit
+              ? props.user?.fullName?.substring(
+                  props.user?.fullName?.indexOf(" ") + 1
+                )
+              : ""
+          }
         >
           <Input
-            placeholder={
-              edit
-                ? props.user?.fullName?.substring(
-                    props.user?.fullName?.indexOf(" ") + 1
-                  )
-                : "Last name"
-            }
+            placeholder={edit ? "" : "Last name"}
             className="user-form__item--last-name"
           />
         </Form.Item>
         <Form.Item
           label="Company Name"
           name="companyId"
+          initialValue={edit ? props.user?.companyName : props.company?.name}
           rules={[{ required: true }]}
-          initialValue={params.companyId}
           className="form-item"
         >
           {comp ? (
@@ -161,15 +165,15 @@ export function UserForm(props: IUserFormProps) {
               disabled
               options={[
                 {
-                  value: params.companyId,
-                  label: companies.find((c) => c.id === params.companyId)?.name,
+                  value: props.company?.id,
+                  label: props.company?.name,
                 },
               ]}
               className="user-form__item--company"
             />
           ) : (
             <Select
-              placeholder={edit ? props.user?.companyName : "Company"}
+              placeholder={edit ? "" : "Company"}
               className="user-form__item--company"
             >
               {companies.map((c) => (
@@ -205,6 +209,7 @@ export function UserForm(props: IUserFormProps) {
           name="position"
           rules={[{ required: true }]}
           className="form-item"
+          initialValue={edit ? props.user?.position : ""}
         >
           <Select
             className="user-form__item--position"
@@ -222,16 +227,12 @@ export function UserForm(props: IUserFormProps) {
           name="phoneNumber"
           rules={[{ required: true }]}
           className="form-item"
+          initialValue={props.user?.phoneNumber}
         >
           <Input
             className="user-form__item--phone-number"
-            placeholder={edit ? props.user?.phoneNumber : "Phone Number"}
+            placeholder={edit ? "" : "Phone Number"}
           />
-        </Form.Item>
-        <Form.Item {...buttonItemLayout}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
         </Form.Item>
       </Form>
     </Modal>

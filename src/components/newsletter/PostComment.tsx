@@ -65,27 +65,31 @@ export function PostComment(props: IPostCommentProps) {
   };
   return (
     <>
-      <h1 style={{ justifyContent: "space-between" }}>
-        <span>Post details</span>
-      </h1>
-      <Button onClick={editPost}>Edit</Button>
-      <Button onClick={deletePost}>Delete</Button>
-      <h2>Title:</h2>
-      <Input.TextArea
-        className="title-textarea"
-        onChange={(e) => {
-          setPost({ ...post, title: e.target.value });
-        }}
-        value={post.title}
-      />
-      <h2>Body:</h2>
-      <Input.TextArea
-        className="body-textarea"
-        onChange={(e) => {
-          setPost({ ...post, body: e.target.value });
-        }}
-        value={post.body}
-      />
+      <div className="comment-form">
+        <h1 style={{ justifyContent: "space-between" }}>
+          <span>Post details</span>
+        </h1>
+        <h2>Title:</h2>
+        <Input.TextArea
+          className="title-textarea"
+          onChange={(e) => {
+            setPost({ ...post, title: e.target.value });
+          }}
+          value={post.title}
+        />
+        <h2>Body:</h2>
+        <Input.TextArea
+          className="body-textarea"
+          onChange={(e) => {
+            setPost({ ...post, body: e.target.value });
+          }}
+          value={post.body}
+        />
+        <div className="comment-form-buttons">
+          <Button onClick={editPost}>Edit</Button>
+          <Button onClick={deletePost}>Delete</Button>
+        </div>
+      </div>
       <div className="comment-container">
         <h1 id="comment_title">Comments</h1>
         {comments ? (
