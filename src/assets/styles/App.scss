@@ -10,10 +10,17 @@ html {
 body {
   box-sizing: border-box;
 }
+.App{
+  text-align: center;
+  position: relative;
+}
 .header {
   height: 100px;
   animation: moveInTop 2s;
+  position: fixed;
   display: flex;
+  z-index: 10;
+  width: 100%;
 }
 $color-font-primary: rgb(123,132,132);
 $color-border-hover-primary: #444444;
@@ -31,6 +38,8 @@ $color-border-hover-primary: #444444;
   background-image: linear-gradient(to left bottom, rgb(220,224,232), rgb(214,217,226));
   padding:4rem 4rem;
   width:100vw;
+  position: absolute;
+  top: 10rem;
 }
 @keyframes moveInTop {
   0% {
