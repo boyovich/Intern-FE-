@@ -2,16 +2,17 @@ import { Button, Pagination } from "antd";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Company } from "../../models/company";
+import { Response } from "../../models/response";
 import { SingleCompany } from "./SingleCompany";
 import type { PaginationProps } from "antd";
 export interface ICompanyListProps {}
 
 export function CompanyList(props: ICompanyListProps) {
-  const [companies, setCompanies] = React.useState<Company[]>([]);
-  const [companiesOnPage, setCompaniesOnPage] = React.useState<Company[]>([]);
-
+  const [companiesOnPage, setCompaniesOnPage] = React.useState<
+    Response<Company>
+  >({ responseList: [], count: 0 });
   React.useEffect(() => {
-    const pageRequest = { pageNumber: 1, pageSize: 100 };
+    const pageRequest = { pageNumber: 1, pageSize: 2 };
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -25,7 +26,7 @@ export function CompanyList(props: ICompanyListProps) {
         throw response;
       })
       .then((data) => {
-        setCompanies(data);
+        setCompaniesOnPage(data);
       })
       .catch((err) => {
         console.log(err);
@@ -72,11 +73,11 @@ export function CompanyList(props: ICompanyListProps) {
             Number of users
           </span>
         </div>
-        {companiesOnPage.map((com) => (
+        {companiesOnPage?.responseList.map((com) => (
           <SingleCompany key={com.id} company={com} />
         ))}
         <Pagination
-          total={companies.length}
+          total={companiesOnPage.count}
           showTotal={(total, range) =>
             `Showing ${range[0]} - ${range[1]} of ${total} results`
           }

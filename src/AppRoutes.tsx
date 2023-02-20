@@ -7,16 +7,16 @@ const LinkRoutes = [
     href: "/",
   },
   {
-    label: "Users",
-    href: "/users",
-  },
-  {
     label: "Companies",
     href: "/companies",
   },
   {
     label: "Newsletter",
     href: "/newsletter",
+  },
+  {
+    label: "Users Table",
+    href: "/users-table",
   },
 ];
 

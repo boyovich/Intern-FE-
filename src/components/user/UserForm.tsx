@@ -3,19 +3,21 @@ import { Button, DatePicker, Form, Input, Select, Modal } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../models/user";
 import { Company } from "../../models/company";
+import { Response } from "../../models/response";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { useDispatch } from "react-redux/es/exports";
 import { toogleOpen } from "../../redux/slices/openUserformSlice";
 import { CompanyForm } from "../company/CompanyForm";
 import { isPropertyAssignment } from "typescript";
+import moment from "moment";
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
 interface CreateUser {
   firstName: string;
   lastName: string;
   companyId: string;
-  dateOfBirth: string;
+  dateOfBirth?: string;
   position: number;
   phoneNumber: string;
 }
@@ -24,10 +26,28 @@ interface IUserFormProps {
   company?: Company;
 }
 const { Option } = Select;
+function positions(p: string | undefined): number | undefined {
+  if (typeof p === "undefined") return undefined;
+  switch (p) {
+    case "Manager":
+      return 0;
+    case "Software Developer":
+      return 1;
+    case "Quality assurance":
+      return 2;
+    case "Staff":
+      return 3;
+    default:
+      return undefined;
+  }
+}
 export function UserForm(props: IUserFormProps) {
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>("horizontal");
-  const [companies, setCompanies] = useState<Company[]>([]);
+  const [companies, setCompanies] = useState<Response<Company>>({
+    responseList: [],
+    count: 0,
+  });
   const [date, setDate] = useState<string>("");
   const params = useParams();
   const isUserformOpened: boolean = useSelector(
@@ -77,7 +97,7 @@ export function UserForm(props: IUserFormProps) {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify(user),
     };
     fetch("http://localhost:5129/User", requestOptions).then((response) =>
       response.json()
@@ -85,8 +105,10 @@ export function UserForm(props: IUserFormProps) {
   };
   const onEdit = (values: any) => {
     let user: CreateUser = values;
-    user.dateOfBirth = date;
-    console.log(user);
+    user.dateOfBirth = props.user?.dateOfBirth.toString().substring(0, 10);
+    if (date) {
+      user.dateOfBirth = date;
+    }
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -100,7 +122,9 @@ export function UserForm(props: IUserFormProps) {
     <Modal
       open={isUserformOpened}
       onCancel={() => dispatch(toogleOpen())}
-      onOk={form.submit}
+      onOk={() => {
+        form.submit();
+      }}
       destroyOnClose
       closable={false}
       className="user-modal"
@@ -155,9 +179,13 @@ export function UserForm(props: IUserFormProps) {
         <Form.Item
           label="Company Name"
           name="companyId"
-          initialValue={edit ? props.user?.companyName : props.company?.name}
           rules={[{ required: true }]}
           className="form-item"
+          initialValue={
+            companies.responseList.find(
+              (c) => c.name == props.user?.companyName
+            )?.id
+          }
         >
           {comp ? (
             <Select
@@ -176,7 +204,7 @@ export function UserForm(props: IUserFormProps) {
               placeholder={edit ? "" : "Company"}
               className="user-form__item--company"
             >
-              {companies.map((c) => (
+              {companies.responseList.map((c) => (
                 <Option
                   key={c.id}
                   value={c.id}
@@ -193,12 +221,12 @@ export function UserForm(props: IUserFormProps) {
           name="dateOfBirth"
           rules={[{ required: true }]}
           className="form-item"
+          initialValue={moment(props.user?.dateOfBirth)}
         >
           <DatePicker
-            placeholder={props.user?.dateOfBirth.toString().substring(0, 10)}
             picker="date"
             format={"YYYY-MM-DD"}
-            onChange={(_, dateString) => {
+            onChange={(date, dateString) => {
               setDate(dateString);
             }}
             allowClear
@@ -209,7 +237,7 @@ export function UserForm(props: IUserFormProps) {
           name="position"
           rules={[{ required: true }]}
           className="form-item"
-          initialValue={edit ? props.user?.position : ""}
+          initialValue={positions(props.user?.position)}
         >
           <Select
             className="user-form__item--position"

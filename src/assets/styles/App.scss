@@ -30,8 +30,7 @@ $color-border-hover-primary: #444444;
   align-items: center;
   background-color: rgb(248, 250, 251);
   padding-top: 10rem;
-  padding-bottom: 5rem;
-  
+  padding-bottom: 5rem;  
   border-radius: 4rem;
 }
 .outer_layout{
@@ -349,18 +348,25 @@ $color-border-hover-primary: #444444;
   flex-direction: column;
   align-items: center;
   height: fit-content;
+  h1{
+    align-self: flex-start;
+  }
   .title-textarea {
-  height: 30px;
-  width: 50%;
+    height: 30px;
+    width: 50%;
+    margin: 1rem;
+    margin-bottom: 2rem;
   }
 
   .body-textarea {
-  height: max-content;
-  width: 50%;
+    height: 10rem;
+    width: 100%;
+    margin: 1rem;
   }
   &-buttons{
     display: flex;
-
+    justify-content: space-around;
+    width: 100%;
   }
 }
 :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-options {
@@ -373,3 +379,14 @@ $color-border-hover-primary: #444444;
   }
 }
 
+.weather_single{
+  margin: 1rem;
+  display: flex;
+  width: 50rem;
+  border: 1px solid black;
+  *{
+    flex: 1 1 20%;
+    flex-wrap: wrap;
+    line-height: 100%;
+  }  
+}

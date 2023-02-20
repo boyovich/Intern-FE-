@@ -9,6 +9,8 @@ import { toogleOpen } from "../../redux/slices/openUserformSlice";
 import { selectUser } from "../../redux/slices/selectUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
+import { wait } from "@testing-library/user-event/dist/utils";
+import { Response } from "../../models/response";
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
 interface CreateCompany {
@@ -31,10 +33,12 @@ export function CompanyForm() {
   };
   const params = useParams();
   const edit: boolean = params.id !== undefined;
-  const [users, setUsers] = React.useState<User[]>([]);
+  const [users, setUsers] = React.useState<Response<User>>({
+    responseList: [],
+    count: 0,
+  });
 
   useEffect(() => {
-    console.log(company);
     fetch("http://localhost:5129/Company")
       .then((response) => {
         if (response.ok) {
@@ -42,18 +46,32 @@ export function CompanyForm() {
         }
         throw response;
       })
-      .then((data: Company[]) => {
-        setCompany(data.find((x) => params.id === x.id));
+      .then((data: Response<Company>) => {
+        setCompany(data.responseList.find((x) => params.id === x.id));
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log(`${company?.name} asdfadsfa`);
-    form.setFieldsValue(company);
   }, []);
   useEffect(() => {
+    form.setFieldsValue({
+      name: company?.name,
+      city: company?.city,
+      country: company?.country,
+    });
+  }, [company]);
+
+  useEffect(() => {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pageNumber: 1, pageSize: 100 }),
+    };
     if (edit) {
-      fetch("http://localhost:5129/User/getUsersByCompany/" + params.id)
+      fetch(
+        "http://localhost:5129/User/getUsersByCompany/" + params.id,
+        requestOptions
+      )
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -115,7 +133,12 @@ export function CompanyForm() {
         onFinish={edit ? onEdit : onCreate}
         className="form company-form"
       >
-        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true }]}
+          initialValue={company?.name}
+        >
           <Input placeholder={company !== undefined ? "" : "Name"} />
         </Form.Item>
         <Form.Item label="City" name="city" rules={[{ required: true }]}>
@@ -146,12 +169,12 @@ export function CompanyForm() {
               </Button>
             </div>
             <div className=" list__header user-list__header">
-              <span className="user-list__user-field--name">Name</span>
-              <span className="user-list__user-field--dob">Date of birth</span>
-              <span className="user-list__user-field--company">Company</span>
-              <span className="user-list__user-field--position">Position</span>
+              <span>Name</span>
+              <span>Date of birth</span>
+              <span>Company</span>
+              <span>Position</span>
             </div>
-            {users.map((user) => (
+            {users.responseList.map((user) => (
               <SingleUser key={user.id} user={user} />
             ))}
           </div>

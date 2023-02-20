@@ -8,6 +8,7 @@ import { CompanyList } from "./components/company/CompanyList";
 import { CompanyForm } from "./components/company/CompanyForm";
 import { PostComment } from "./components/newsletter/PostComment";
 import { Posts } from "./components/newsletter/Posts";
+import { UserTable } from "./components/user/UserTable";
 function App() {
   return (
     <div className="App">
@@ -31,7 +32,7 @@ function App() {
             {/* <Route path="/new-user" element={<UserForm />}></Route> */}
             {/* <Route path="users/update-user/:id" element={<UserForm />}></Route> */}
             <Route path="/posts/:id/comment" element={<PostComment />}></Route>
-            {/* <Route path="/create-user/:companyId" element={<UserForm />}></Route> */}
+            <Route path="/users-table" element={<UserTable />}></Route>
           </Routes>
         </div>
       </div>

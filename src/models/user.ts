@@ -9,9 +9,3 @@ export interface User {
   phoneNumber : string;
 }
 
-enum Position {
-  Manager,
-  SoftwareDeveloper,
-  QA,
-  Stuff,
-}

@@ -66,12 +66,11 @@ export function PostComment(props: IPostCommentProps) {
   return (
     <>
       <div className="comment-form">
-        <h1 style={{ justifyContent: "space-between" }}>
-          <span>Post details</span>
-        </h1>
+        <h1>Post details</h1>
         <h2>Title:</h2>
         <Input.TextArea
           className="title-textarea"
+          name="title"
           onChange={(e) => {
             setPost({ ...post, title: e.target.value });
           }}
@@ -80,6 +79,7 @@ export function PostComment(props: IPostCommentProps) {
         <h2>Body:</h2>
         <Input.TextArea
           className="body-textarea"
+          title="body"
           onChange={(e) => {
             setPost({ ...post, body: e.target.value });
           }}
