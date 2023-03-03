@@ -32,6 +32,15 @@ $color-border-hover-primary: #444444;
   padding-top: 10rem;
   padding-bottom: 5rem;  
   border-radius: 4rem;
+  .order{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 80%;
+    *{
+      margin: 1px 5px;
+    }
+  }
 }
 .outer_layout{
   background-image: linear-gradient(to left bottom, rgb(220,224,232), rgb(214,217,226));

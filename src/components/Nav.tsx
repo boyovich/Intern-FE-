@@ -35,6 +35,8 @@ function weatherIcon(description: string) {
       return MoonNightCloudyLogo;
     case "partly sunny":
       return PartlySunnyLogo;
+    case "foggy":
+      return MoonNightCloudyLogo;
     default:
       return Celsius;
   }

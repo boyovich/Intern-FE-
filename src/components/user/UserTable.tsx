@@ -1,5 +1,5 @@
 import { Button, PaginationProps } from "antd";
-import Table, { ColumnsType } from "antd/es/table";
+import Table, { ColumnsType, TableProps } from "antd/es/table";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../models/user";
@@ -8,6 +8,7 @@ import { selectUser } from "../../redux/slices/selectUserSlice";
 import { toogleOpen } from "../../redux/slices/openUserformSlice";
 import { RootState } from "../../redux/store/store";
 import { UserForm } from "./UserForm";
+import { is } from "immer/dist/internal";
 export interface IUserTableProps {}
 type UserRow = {
   key: string;
@@ -94,15 +95,16 @@ export function UserTable(props: IUserTableProps) {
       key: "fullName",
       dataIndex: "fullName",
       title: "Full Name",
+      sorter: true,
     },
     { key: "dateOfBirth", dataIndex: "dateOfBirth", title: "Date of Birth" },
     {
       key: "companyName",
       dataIndex: "companyName",
       title: "Company Name",
-      sorter: (a, b) => a.companyName.localeCompare(b.companyName),
+      sorter: true,
     },
-    { key: "position", dataIndex: "position", title: "Position" },
+    { key: "position", dataIndex: "position", title: "Position", sorter: true },
     {
       key: "actions",
       dataIndex: "actions",
@@ -134,6 +136,60 @@ export function UserTable(props: IUserTableProps) {
       ),
     },
   ];
+  function sortProperty(s: string | undefined) {
+    switch (s) {
+      case "companyName":
+        return "CompanyId";
+      case "fullName":
+        return "FirstName";
+      case "position":
+        return "Position";
+      default:
+        return s;
+    }
+  }
+  const onChange: TableProps<UserRow>["onChange"] = (
+    pagination,
+    filters,
+    sorter,
+    extra
+  ) => {
+    if (sorter.hasOwnProperty("column")) {
+      const request = {
+        pageNumber: pagination.current,
+        pageSize: pagination.pageSize,
+        sortBy:
+          sortProperty(
+            Object.getOwnPropertyDescriptor(sorter, "columnKey")?.value
+          ) + Object.getOwnPropertyDescriptor(sorter, "order")?.value,
+      };
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request),
+      };
+      fetch("http://localhost:5129/User/getUsers", requestOptions)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response;
+        })
+        .then((data) => {
+          setUsers(data);
+        })
+        .catch((err) => console.log(err));
+    }
+    console.log(
+      pagination,
+      filters,
+      sorter,
+      extra,
+      sortProperty(
+        Object.getOwnPropertyDescriptor(sorter, "columnKey")?.value
+      ) + Object.getOwnPropertyDescriptor(sorter, "order")?.value
+    );
+  };
   return (
     <>
       <Button
@@ -149,6 +205,7 @@ export function UserTable(props: IUserTableProps) {
         dataSource={dataSource}
         columns={columns}
         className="list user-list"
+        onChange={onChange}
         pagination={{
           defaultCurrent: 1,
           defaultPageSize: 2,
