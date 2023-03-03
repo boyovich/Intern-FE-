@@ -1,24 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import "./assets/styles/App.scss";
+import "antd/dist/reset.css";
+import { Nav } from "./components/Nav";
+import { Route, Routes } from "react-router-dom";
+import { UserList } from "./components/user/UserList";
+import { CompanyList } from "./components/company/CompanyList";
+import { CompanyForm } from "./components/company/CompanyForm";
+import { PostComment } from "./components/newsletter/PostComment";
+import { Posts } from "./components/newsletter/Posts";
+import { UserTable } from "./components/user/UserTable";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Nav />
+      <div className="outer_layout">
+        <div className="layout">
+          <Routes>
+            <Route path="/" element={<h1>Welcome</h1>} />
+            <Route path="/users" element={<UserList />} />
+            <Route path="/companies" element={<CompanyList />} />
+            <Route path="/newsletter" element={<Posts />} />
+            <Route
+              path="companies/new-company"
+              element={<CompanyForm />}
+            ></Route>
+            <Route
+              path="companies/update-company/:id"
+              element={<CompanyForm />}
+            ></Route>
+
+            {/* <Route path="/new-user" element={<UserForm />}></Route> */}
+            {/* <Route path="users/update-user/:id" element={<UserForm />}></Route> */}
+            <Route path="/posts/:id/comment" element={<PostComment />}></Route>
+            <Route path="/users-table" element={<UserTable />}></Route>
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }
